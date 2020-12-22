@@ -7,6 +7,7 @@ function check {
 }
 
 check INFLUX_HOSTNAME $INFLUX_HOSTNAME
+check INFLUX_PORT $INFLUX_PORT
 check INFLUX_USERNAME $INFLUX_USERNAME
 check INFLUX_PASSWORD $INFLUX_PASSWORD
 check INFLUX_TOKEN $INFLUX_TOKEN
@@ -18,13 +19,13 @@ echo "Done!"
 
 set -e
 
-./wait-for.sh "$INFLUX_HOSTNAME:9999" --timeout=600
+./wait-for.sh "$INFLUX_HOSTNAME:$INFLUX_PORT" --timeout=600
 
 echo "Broker ready"
 
-echo "http://$INFLUX_HOSTNAME:9999/api/v2/setup"
+echo "http://$INFLUX_HOSTNAME:$INFLUX_PORT/api/v2/setup"
 curl -X POST \
-	"http://$INFLUX_HOSTNAME:9999/api/v2/setup" \
+	"http://$INFLUX_HOSTNAME:$INFLUX_PORT/api/v2/setup" \
 	-H 'Content-Type: application/json' \
 	-d "{
 		\"username\": \"$INFLUX_USERNAME\",
